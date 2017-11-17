@@ -1,0 +1,166 @@
+<html>
+<head>
+<style>
+    body, html {
+      height: 100%;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal {
+      display: none;
+      position: absolute;
+      left: 0;
+      top: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      width: 100%;
+      height: 100%;
+
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal > div {
+      display: flex;
+      width: 200px;
+      height: 160px;
+      background-color: #fff;
+      border-radius: 20px;
+      justify-content: center;
+      align-items: center;
+    }
+
+
+    .modal > .Xparent{
+        z-index: 1;
+        background-color: white;
+        position: relative;
+        right: 35px;
+        bottom: 60px;
+
+        border: 1px black solid;
+        border-radius: 5px;
+        height: 15px;
+        width: 15px;
+    }
+
+    .modal > .Xparent:active{
+        background-color: grey;
+    }
+
+    .modal > .Xparent > .X-1{
+        position: absolute;
+
+        background-color: black;
+        border-radius: 10px;
+        height: 4px;
+        width: 15px;
+        transform: rotate(45deg);
+    }
+
+    .modal > .Xparent > .X-2{
+        position: absolute;
+        background-color: black;
+        border-radius: 10px;
+        height: 4px;
+        width: 15px;
+        transform: rotate(-45deg);
+
+    }
+  </style>
+</head>
+  <body>
+      <div>
+          <p><input id ="price"></p>
+          <button id="tip15">15% Tip</button>
+          <button id="tip18">18% Tip</button>
+          <button id="tip22">22% Tip</button>
+          <p><input id ="tip-percent"></p>
+          <p><button id ="calculate">Custom Tip</button></p>
+          <p id="tip"></p>
+          <p id="total">??</p>
+
+          <div id="overlay" class="modal">
+              <div>Hello</div>
+              <div id="xparent" class="Xparent">
+                  <div class="X-1"></div>
+                  <div class="X-2"></div>
+              </div>
+          </div>
+          <p><button id="show-modal">Show Modal</button></p>
+      </div>
+      <!--try to put the script tage at the bottom for the purpose of loading functions without a callback -->
+      <script>
+      const modalButton = document.getElementById('show-modal')
+      const overlay = document.getElementById('overlay')
+      const close = document.getElementById('close')
+      const xparent = document.getElementById('xparent')
+
+
+
+      modalButton.addEventListener('click', (e) => {
+          overlay.classList.add('show')
+      })
+
+      xparent.addEventListener('click', (e) => {
+          overlay.classList.remove('show')
+      })
+
+
+      const price= document.getElementById("price")
+      const percent= document.getElementById("tip-percent")
+      const tipView= document.getElementById("tip")
+      const totalView= document.getElementById("total")
+      const calculateButton = document.getElementById("calculate")
+      const view15 =document.getElementById("tip15")
+      const view18 =document.getElementById("tip18")
+      const view22 =document.getElementById("tip22")
+
+
+      const calculateTip=(price,percent) =>{
+        let tip = price * percent/100
+        return tip
+      }
+      calculateButton.addEventListener('click', (e) => {
+        //turns the user input into numbers
+        const prices= Number(price.value)
+        const percents = Number(percent.value)
+        const tip = calculateTip(prices,percents)
+        tipView.innerHTML= tip.toFixed(2)
+        totalView.innerHTML = (prices + tip).toFixed(2)
+      })
+
+      view15.addEventListener('click', (e) => {
+        // Turn to 15
+        const prices= Number(price.value)
+        const tip = calculateTip(prices,15)
+        tipView.innerHTML = tip.toFixed(2)
+        totalView.innerHTML = (prices + tip).toFixed(2)
+
+
+      })
+      view18.addEventListener('click', (e) => {
+        // Turn to 15
+        const prices= Number(price.value)
+        const tip = calculateTip(prices,18)
+        tipView.innerHTML= tip.toFixed(2)
+        totalView.innerHTML = (prices + tip).toFixed(2)
+
+      })
+
+      view22.addEventListener('click', (e) => {
+        // Turn to 15
+        const prices= Number(price.value)
+        const tip = calculateTip(prices,22)
+        tipView.innerHTML= tip.toFixed(2)
+        totalView.innerHTML = (prices + tip).toFixed(2)
+
+
+      })
+
+
+      </script>
+    </body>
+</html>
