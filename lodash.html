@@ -1,9 +1,43 @@
+<style>
+.something{
+    color: grey;
+}
+
+.data{
+    display: none;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+
+}
+
+.data > .modal{
+    position: absolute;
+    left: 50%;
+    bottom: 50%;
+    transform: translate(-50%);
+    vertical-align: middle;
+    background-color: white;
+    width: 300px;
+    height: 200px;
+    border-radius: 20px;
+    padding-left: 10px;
+    padding-top: 2px;
+}
+</style>
+
 <p id="size"></p>
 <div id="products">
 </div>
 Hello there!
-<script src="jquery-3.2.1.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.4/lodash.min.js"></script>
+<script src="jquery-3.2.1.js"></script>
+
 <script>
 const products = document.getElementById("products")
 const size = document.getElementById("size")
@@ -18,20 +52,6 @@ fetch('MOCK_DATA.json').then((data) => {
     console.log(chunk)
     console.log(data)
 
-    const str = sorted.reduce((acc, obj, index, arr) => {
-        return acc += `
-        <div class="something" data-id="${obj.id}">
-            <h1>${obj.name}<h1>
-            <h2>${obj.category}</h2>
-                <p>${obj.price} <br>
-                ${obj.description}
-                </p>
-        </div>
-        <hr>`
-    }, '')
-
-    products.innerHTML = str
-
     let categories = _.uniqBy(data, 'category')
 
     let newlist = []
@@ -41,12 +61,57 @@ fetch('MOCK_DATA.json').then((data) => {
     })
 
     console.log(cats)
-}).then(() => {
 
-    $(".something").click(() => {
-        let variable = $(this).attr('data-id')
-        $(this).hide()
-    })
+    const str = sorted.reduce((acc, obj, index, arr) => {
+        return acc +=
+        // `
+        // <div class="something" data-id="${obj.id}">
+        //     <h1>${obj.name}<h1>
+        //     <h2>${obj.category}</h2>
+        //         <p>${obj.price} <br>
+        //         ${obj.description}
+        //         </p>
+        // </div>
+        // <hr>
+        // `
+
+        `
+        <h1 class="something">${obj.name}</h1>
+        <div class="data" data-id="${obj.id}">
+            <div class="modal">
+                <h2>Category: ${obj.category}</h2>
+                    <p>Price: ${obj.price}</p>
+                    <p>${obj.description}</p>
+            </div>
+        </div>
+        <hr>
+        `
+    }, '')
+
+    return str
+
+}).then((str) => {
+    products.innerHTML = str
+    return
+}).then(() => {
+    const something = document.getElementsByClassName('something')
+    const data = document.getElementsByClassName('data')
+
+
+    for(let i = 0; i< something.length ;i++ ){
+        something[i].addEventListener('click', (e) => {
+            data[i].setAttribute("style", "display: inline;")
+        })
+        data[i].addEventListener('click', (e) => {
+            data[i].setAttribute("style", "display: none;")
+        })
+    }
+
+    // $(".something").click((e) => {
+    //     let variable = $(this).data('id')
+    //     console.log("hey")
+    //     console.log(variable)
+    // })
 })
 
 
