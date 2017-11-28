@@ -1,0 +1,200 @@
+<style>
+
+    .red{
+        background-color: red;
+    }
+    .selected{
+        opacity: 0.5;
+    }
+    .blue{
+        background-color: blue;
+    }
+    .green{
+        background-color: green;
+
+    }
+    .boxparent{
+        display: inline-grid;
+        grid-template-columns: repeat(4, auto);
+        grid-gap: 5px;
+    }
+
+    .boxparent > div{
+        width: 100px;
+        height: 100px;
+        margin: 10px;
+    }
+
+    .modal {
+      display: none;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      border-radius: 20px;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      left: 0px;
+      top: 0px;
+    }
+
+    .modal > .tipbox{
+        background-color: white;
+        width: 200px;
+        height: 200px;
+        text-align: center;
+        vertical-align: middle;
+        border-radius: 20px;
+
+    }
+
+    .modal.show{
+        display: flex;
+    }
+
+    /* The X sign! */
+    .modal > .Xparent{
+        z-index: 1;
+        background-color: white;
+        position: relative;
+        right: 45px;
+        bottom: 60px;
+
+        border: 1px black solid;
+        border-radius: 5px;
+        height: 15px;
+        width: 15px;
+    }
+
+    .modal > .Xparent:active{
+        background-color: grey;
+    }
+
+    .modal > .Xparent > .X-1{
+        position: absolute;
+        top: 5px;
+        background-color: black;
+        border-radius: 10px;
+        height: 4px;
+        width: 15px;
+        transform: rotate(45deg);
+    }
+
+    .modal > .Xparent > .X-2{
+        position: absolute;
+        top: 5px;
+        background-color: black;
+        border-radius: 10px;
+        height: 4px;
+        width: 15px;
+        transform: rotate(-45deg);
+    }
+
+    .slide {
+        transition: 400ms;
+        overflow: hidden;
+        background: red;
+        height: 20px;
+    }
+
+    .slideUp {
+        height: 0px;
+    }
+
+    div.box2 {
+        width: 100px;
+        height: 100px;
+        transition: 1000ms;
+        background-color: red;
+    }
+
+    div.box2:hover {
+        background-color: blue;
+    }
+
+</style>
+
+<div class="calculator">
+    <input id="amount" type="number" />
+    <input id="tip" type="number" />
+    <div class="modal">
+        <div class="tipbox">
+            Your tip is:
+            <p id="show-tip"></p></div>
+            <div id="xparent" class="Xparent">
+                <div class="X-1"></div>
+                <div class="X-2"></div>
+            </div>
+    </div>
+    <button id="calculate">Calculate</button>
+
+</div>
+<div class="boxparent">
+    <div class="box red"></div>
+    <div class="box red"></div>
+    <div class="box red"></div>
+    <div class="box red"></div>
+    <div class="box green"></div>
+    <div class="box blue"></div>
+    <div class="box blue"></div>
+    <div class="box green"></div>
+    <div class="box blue"></div>
+    <div class="box green"></div>
+    <div class="box green"></div>
+    <div class="box green"></div>
+</div>
+
+<div class="box2"></div>
+
+<div>
+    <h3>Title</h3>
+    <p class="slide">AA A AAA AAA   AAAAA AA AAA</p>
+    <h3>Title</h3>
+    <p class="slide">AA A AAA AAA   AAAAA AA AAA</p>
+    <h3>Title</h3>
+    <p class="slide">AA A AAA AAA   AAAAA AA AAA</p>
+    <h3>Title</h3>
+    <p class="slide">AA A AAA AAA   AAAAA AA AAA</p>
+    <h3>Title</h3>
+    <p class="slide">AA A AAA AAA   AAAAA AA AAA</p>
+</div>
+
+
+<script src="jquery-3.2.1.js"></script>
+<script>
+    $(".box").click(function(){
+        var a = $(this).attr('class').split(" ")[1]
+        var b = "." + a
+
+        $(this).addClass('selected')
+        .siblings(b)
+        .removeClass('selected')
+
+    })
+
+    $("#calculate").click(function(){
+        let price = Number($("#amount").val())
+        let tip = Number($("#tip").val())
+        let tipAmount = calculateTip(price, tip)
+
+        $("#show-tip").html(tipAmount)
+        $(".modal").addClass('show')
+    })
+    // xparent.addEventListener('click', (e) => {
+    //     overlay.classList.remove('show')
+    // })
+
+    $('#xparent').click(function(){
+        $('.modal').removeClass('show')
+    })
+
+    function calculateTip(price,tip){
+        return (price * tip / 100).toFixed(2);
+    }
+
+
+
+    $("h3").click(function(){
+        $(this).next('p').toggleClass('slideUp')
+    })
+</script>
